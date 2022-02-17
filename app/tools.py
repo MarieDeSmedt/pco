@@ -3,8 +3,11 @@ import os
 
 from bokeh.models import Div
 from dotenv import load_dotenv
+from database import connect_to_mysql as ctm
 
 def authentication():
+
+    #con=ctm.connect_to_users()
     
     login = st.sidebar.text_input("Login:", value="")
     password = st.sidebar.text_input("Password:", value="", type="password")
@@ -21,12 +24,15 @@ def authentication():
     st.bokeh_chart(div)
 
     load_dotenv()
+    authenticaton_state = False
 
     if login and password:
 
+        authenticaton_state = True
+
         if login == os.environ['USER1'] and password == os.environ['PASSWORD1']:
             st.success('Bonjour marie')   
-
+            
         elif login == os.environ['USER2'] and password == os.environ['PASSWORD2']:
             st.success('Bonjour josephine')  
 
@@ -35,3 +41,7 @@ def authentication():
                   
         else :
            st.error("ERROR LOGIN AND PASSWORD")
+           authenticaton_state = False
+           
+
+    return authenticaton_state

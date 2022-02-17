@@ -1,7 +1,8 @@
 import streamlit as st
+from hydralit import HydraApp
 
+from pages import home,admin
 
-from tools import authentication
 
 
 st.set_page_config(
@@ -10,7 +11,8 @@ st.set_page_config(
     page_icon=':rocket:'
 )
 
-# CSS
+
+#css
 st.markdown("""
         <style>
                .css-18e3th9 {
@@ -29,15 +31,4 @@ st.markdown("""
         """, unsafe_allow_html=True)
 
 
-
-
-
-
-
-
-if __name__ == '__main__':
-    st.sidebar.image('./images/download.png', output_format='png')
-
-    #authentication
-    authentication()
-  
+home.display_home()
