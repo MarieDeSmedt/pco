@@ -19,9 +19,7 @@ class Database:
         )
         self.my_cursor = self.my_db.cursor()
     
-    def __del__(self):
-        self.my_db.commit()
-
+    
 
 
 class UsersCrud(Database):
@@ -32,6 +30,7 @@ class UsersCrud(Database):
         try:
             self.my_cursor.execute(query)
             result = self.my_cursor.fetchall()
+            
         except Exception as e:
             st.write(e)
             return e
@@ -41,17 +40,22 @@ class UsersCrud(Database):
         query = "INSERT INTO `users` (`id`, `login`, `password`, `admin`) VALUES (NULL, %s, %s, %s)"
         value = (login, password,admin)
         try:
+            st.write(query)
+            st.write(value)
             self.my_cursor.execute(query,value)
+            self.my_db.commit()
+            self.my_db.close()
         except Exception as e:
             return e
         
-   
 
     def update_user(self,id_to_update,new_login,new_password,new_admin):
         query = "UPDATE users SET login = %s, password = %s, admin = %s WHERE id = %s"
         value = (new_login, new_password, new_admin, id_to_update)
         try:
             self.my_cursor.execute(query,value)
+            self.my_db.commit()
+            self.my_db.close()
         except Exception as e:
             return e    
     
@@ -60,6 +64,8 @@ class UsersCrud(Database):
         query = f"""DELETE FROM users WHERE id = {id_to_delete}"""
         try:
             self.my_cursor.execute(query)
+            self.my_db.commit()
+            self.my_db.close()
         except Exception as e:
             return e  
 

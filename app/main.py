@@ -1,16 +1,15 @@
+
 import streamlit as st
-from hydralit import HydraApp
+import hydralit_components as hc
+import pandas as pd
 
-from pages import home
+from pages.home import display_home
+from pages.admin import display_admin
+from tools import *
 
 
-
-st.set_page_config(
-    page_title='My App',
-    layout='wide',
-    page_icon=':rocket:'
-)
-
+# toujours en premier
+st.set_page_config(layout='wide',initial_sidebar_state='expanded')
 
 #css
 st.markdown("""
@@ -22,7 +21,7 @@ st.markdown("""
                     padding-right: 5rem;
                 }
                .css-1d391kg {
-                    padding-top: 3.5rem;
+                    padding-top: 0rem;
                     padding-right: 1rem;
                     padding-bottom: 3.5rem;
                     padding-left: 1rem;
@@ -30,5 +29,47 @@ st.markdown("""
         </style>
         """, unsafe_allow_html=True)
 
+#init
+st.session_state['authenticaton_state']= False
+st.session_state["role"]="user"
 
-home.display_home()
+#connexion
+authentication_tool()
+
+
+#si connecté
+if st.session_state['authenticaton_state']:
+
+    #Nom des onglets
+    if st.session_state["role"] == "admin":
+        menu_data = [
+            {'label':"Home"},
+            {'label':"Admin"}
+        ]
+    else:
+        menu_data = [
+            {'label':"Home"}
+        ]
+
+    #set the navbar
+    menu_id = hc.nav_bar(
+        menu_definition=menu_data,
+        sticky_nav=True, 
+        sticky_mode='pinned'
+    )
+
+
+    #action selon onglet 
+    if menu_id == "Admin":
+        display_admin()
+    else: 
+        display_home()
+
+
+else:
+    st.warning("Please connect")
+    
+
+
+
+    
