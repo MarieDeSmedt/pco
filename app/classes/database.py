@@ -47,31 +47,31 @@ class UsersCrud(Database):
             return e
         return result
 
-    # def create_user(cls,login,password,admin):
-    #     query = "INSERT INTO `users` (`id`, `login`, `password`, `admin`) VALUES (NULL, %s, %s, %s)"
-    #     value = (login, password,admin)
-    #     try:
-    #         cls.my_cursor.execute(query,value)
-    #     except Exception as e:
-    #         return e
+    def create_user(self,login,password,admin):
+        query = "INSERT INTO `users` (`id`, `login`, `password`, `admin`) VALUES (NULL, %s, %s, %s)"
+        value = (login, password,admin)
+        try:
+            self.my_cursor.execute(query,value)
+        except Exception as e:
+            return e
         
    
 
-    # def update_user(self,id_to_update,new_login,new_password,new_admin):
-    #     query = "UPDATE users SET login = %s, password = %s, admin = %s WHERE id = %s"
-    #     value = (new_login, new_password, new_admin, id_to_update)
-    #     try:
-    #         self.my_cursor.execute(query,value)
-    #     except Exception as e:
-    #         return e    
+    def update_user(self,id_to_update,new_login,new_password,new_admin):
+        query = "UPDATE users SET login = %s, password = %s, admin = %s WHERE id = %s"
+        value = (new_login, new_password, new_admin, id_to_update)
+        try:
+            self.my_cursor.execute(query,value)
+        except Exception as e:
+            return e    
     
 
-    # def delete_user(self, id_to_delete):
-    #     query = f"""DELETE FROM users WHERE id = {id_to_delete}"""
-    #     try:
-    #         self.my_cursor.execute(query)
-    #     except Exception as e:
-    #         return e  
+    def delete_user(self, id_to_delete):
+        query = f"""DELETE FROM users WHERE id = {id_to_delete}"""
+        try:
+            self.my_cursor.execute(query)
+        except Exception as e:
+            return e  
 
 
 

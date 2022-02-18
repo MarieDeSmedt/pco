@@ -56,6 +56,7 @@ def create_user_tool():
 
     if login and password:
         if st.button('create user'):
+            uc = UsersCrud()
             try:
                 uc.create_user(login, password,admin)
                 st.success("User created successfully")
@@ -69,9 +70,9 @@ def read_users_tool():
         rows = uc.read_users()
         for user in rows:
             if user[3] == 1:
-                st.write("Id:" + str(user[0]) + "login: " + user[1] + ", pasword: " + user[2] + ", Is admin: yes")
+                st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: yes")
             else:
-                st.write("Id:" + str(user[0]) + "login: " + user[1] + ", pasword: " + user[2] + ", Is admin: no")
+                st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: no")
             st.write("-----------------------------------")
 
     except Exception as e:
@@ -88,6 +89,7 @@ def update_user_tool():
 
     if old_id and new_login and new_password:
         if st.button('update user'):
+            uc = UsersCrud()
             try:
                 uc.update_user(old_id,new_login,new_password,new_admin)
                 st.success("User updated successfully")
@@ -101,6 +103,7 @@ def delete_user_tool():
 
     if old_id :
         if st.button('delete user'):
+            uc = UsersCrud()
             try:
                 uc.delete_user(old_id)
                 st.success("User deleted successfully")
