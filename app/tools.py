@@ -3,8 +3,8 @@ import os
 
 from bokeh.models import Div
 from dotenv import load_dotenv
-from database import connect_to_mysql as ctm
-from database import users_crud as uc
+from classes.database import UsersCrud
+
 
 
 def authentication_tool():
@@ -55,20 +55,18 @@ def create_user_tool():
     admin = st.checkbox("admin")
 
     if login and password:
-
         if st.button('create user'):
             try:
-                connection = ctm.connect_to_users_database()
-                uc.create_user(login,password,admin,connection)
+                uc.create_user(login, password,admin)
                 st.success("User created successfully")
             except Exception as e:
                 st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                 st.error('Error details: {}'.format(e))
 
 def read_users_tool():
+    uc = UsersCrud()
     try:
-        connection = ctm.connect_to_users_database()
-        rows = uc.read_users(connection)
+        rows = uc.read_users()
         for user in rows:
             if user[3] == 1:
                 st.write("Id:" + str(user[0]) + "login: " + user[1] + ", pasword: " + user[2] + ", Is admin: yes")
@@ -79,39 +77,33 @@ def read_users_tool():
     except Exception as e:
         st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
         st.error('Error details: {}'.format(e))
+        st.write(e)
 
 def update_user_tool():
+
     old_id = st.number_input("id user to update", step =1)
     new_login = st.text_input("New login")
     new_password = st.text_input("New password")
     new_admin = st.checkbox("New admin")
 
     if old_id and new_login and new_password:
-
         if st.button('update user'):
             try:
-                connection = ctm.connect_to_users_database()
-                uc.update_user(connection, old_id,new_login,new_password,new_admin)
-                connection2 = ctm.connect_to_users_database()
-                uc.read_users(connection2)
+                uc.update_user(old_id,new_login,new_password,new_admin)
                 st.success("User updated successfully")
             except Exception as e:
                 st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                 st.error('Error details: {}'.format(e))
 
-
-
 def delete_user_tool():
-    old_id = st.number_input("id user to delete",step = 1)
-    if old_id :
 
+    old_id = st.number_input("id user to delete",step = 1)
+
+    if old_id :
         if st.button('delete user'):
             try:
-                connection = ctm.connect_to_users_database()
-                uc.delete_user(connection, old_id)
-                connection2 = ctm.connect_to_users_database()
-                uc.read_users(connection2)
+                uc.delete_user(old_id)
                 st.success("User deleted successfully")
-            except connection.errors as e:
+            except Exception as e:
                 st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                 st.error('Error details: {}'.format(e))
