@@ -3,22 +3,12 @@ import os
 import streamlit as st
 from dotenv import load_dotenv
 
-# def connect_to_users_database():
 
-#     load_dotenv()
-#     HOST = os.environ['host']
-#     USER = os.environ['user']
-#     PASSWORD = os.environ['password']
-#     DATABASE_NAME = os.environ['database_name']
-#     conn = connection.connect(host=HOST, user=USER, password=PASSWORD,database=DATABASE_NAME)
-
-#     return conn
 
 class Database:
 
     load_dotenv()
 
-    
     def __init__(self):
         
         self.my_db = connection.connect(
