@@ -3,7 +3,7 @@ import os
 
 from dotenv import load_dotenv
 
-def connect_to_users():
+def connect_to_users_database():
     load_dotenv()
     HOST = os.environ['host']
     USER = os.environ['user']

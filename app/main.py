@@ -1,7 +1,7 @@
 import streamlit as st
 from hydralit import HydraApp
 
-from pages import home,admin
+from pages import home
 
 
 
