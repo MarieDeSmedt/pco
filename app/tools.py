@@ -3,13 +3,11 @@ import os
 
 from bokeh.models import Div
 from dotenv import load_dotenv
-from classes.database import UsersCrud
+from classes.database import UsersCrud 
 
 
 
 def authentication_tool():
-
-    #con=ctm.connect_to_users()
     
     login = st.sidebar.text_input("Login:", value="")
     password = st.sidebar.text_input("Password:", value="", type="password")
@@ -29,23 +27,22 @@ def authentication_tool():
     authenticaton_state = False
 
     if login and password:
-
-        authenticaton_state = True
-
-        if login == os.environ['USER1'] and password == os.environ['PASSWORD1']:
-            st.success('attention connectée en dur')   
-            
-        elif login == os.environ['USER2'] and password == os.environ['PASSWORD2']:
-            st.success('attention connectée en dur')   
-
-        elif login == os.environ['USER3'] and password == os.environ['PASSWORD3']:
-            st.success('attention connectée en dur')  
-                  
-        else :
-           st.error("ERROR LOGIN AND PASSWORD")
-           authenticaton_state = False
+        if st.sidebar.button("connect"):
+            authenticaton_state = True
+            uc= UsersCrud()
+            users_list = uc.read_users()
+            if len(users_list)>0 :
+                for user in users_list:            
+                    if user[1]==login and user[2]==password:
+                        if user[3]:
+                            st.session_state["role"]="admin"
+                        else:
+                            st.session_state["role"]="user"
+                        st.sidebar.success('Vous êtes connecté en tant que '+ st.session_state["role"])       
+            else :
+                st.sidebar.error("ERROR LOGIN AND PASSWORD")
+            authenticaton_state = False
            
-
     return authenticaton_state
 
 def create_user_tool():
