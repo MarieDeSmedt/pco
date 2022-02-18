@@ -70,23 +70,25 @@ def create_user_tool():
                     st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                     st.error('Error details: {}'.format(e))
 
+
 def read_users_tool():
     uc = UsersCrud()
     try:
         rows = uc.read_users()
-        for user in rows:
-            if user[3] == 1:
-                st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: yes")
-            else:
-                st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: no")
-            st.write("-----------------------------------")
-
+        # for user in rows:
+        #     if user[3] == 1:
+        #         st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: yes")
+        #     else:
+        #         st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: no")
+        #     st.write("-----------------------------------")
+        return rows
 
 
     except Exception as e:
         st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
         st.error('Error details: {}'.format(e))
         st.write(e)
+
 
 def update_user_tool():
     uc = UsersCrud()
@@ -103,7 +105,7 @@ def update_user_tool():
             except Exception as e:
                 st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                 st.error('Error details: {}'.format(e))
-    
+
 
 def delete_user_tool():
     uc = UsersCrud()
