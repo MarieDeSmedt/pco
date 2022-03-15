@@ -8,6 +8,9 @@ from classes.objects import UsersCrud
 
 
 def authentication_tool():
+    """
+    tool to display component for authetication
+    """
     
     login = st.sidebar.text_input("Login:", value="")
     password = st.sidebar.text_input("Password:", value="", type="password")
@@ -25,27 +28,34 @@ def authentication_tool():
 
     load_dotenv()
     st.session_state['authenticaton_state'] = "False"
-    # if st.sidebar.button("connect"):
+    
+    if st.sidebar.button("connect"):
 
-    if login and password:
-        uc= UsersCrud()
-        users_list = uc.read_users()
-        if len(users_list)>0 :
-            for user in users_list:            
-                if user[1]==login and user[2]==password:
-                    if user[3]:
-                        st.session_state["role"]="admin"
-                    else:
-                        st.session_state["role"]="user"
-                    st.sidebar.success('you are connected as '+ st.session_state["role"])  
-                    st.session_state['authenticaton_state']= True     
-        else :
-            st.sidebar.error("ERROR LOGIN AND PASSWORD")
-            st.session_state['authenticaton_state']= False
+        if login and password:
+            uc = UsersCrud()
+            try:
+                user = uc.get_user(login,password)
+            except Exception as e:
+                st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
+                st.error('Error details: {}'.format(e))
+            if user :
+                if user[3]!=0:
+                    st.session_state["role"]="admin"
+                else:
+                    st.session_state["role"]="user"
+                st.sidebar.success('you are connected as '+ st.session_state["role"])  
+                st.session_state['authenticaton_state']= True     
+            else:
+                st.sidebar.error("ERROR LOGIN AND PASSWORD")
+
     
-    
+                    
+       
 
 def create_user_tool():
+    """
+    Create a user with a login and password
+    """
     uc = UsersCrud()
     login = st.text_input("login")
     password = st.text_input("password")
@@ -72,18 +82,14 @@ def create_user_tool():
 
 
 def read_users_tool():
+    """
+    It reads the users table from the database and returns the rows
+    :return: A list of dictionaries.
+    """
     uc = UsersCrud()
     try:
         rows = uc.read_users()
-        # for user in rows:
-        #     if user[3] == 1:
-        #         st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: yes")
-        #     else:
-        #         st.write("Id:" + str(user[0]) + "   login: " + user[1] + ",  pasword: " + user[2] + ",  Is admin: no")
-        #     st.write("-----------------------------------")
         return rows
-
-
     except Exception as e:
         st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
         st.error('Error details: {}'.format(e))
@@ -91,6 +97,9 @@ def read_users_tool():
 
 
 def update_user_tool():
+    """
+    It takes an id, a login, a password and an admin status and updates the user with the given id
+    """
     uc = UsersCrud()
     old_id = st.number_input("id user to update", step =1)
     new_login = st.text_input("New login")
@@ -108,6 +117,9 @@ def update_user_tool():
 
 
 def delete_user_tool():
+    """
+    It takes an id as input, and delete the user with that id
+    """
     uc = UsersCrud()
     old_id = st.number_input("id user to delete",step = 1)
 
