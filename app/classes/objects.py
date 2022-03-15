@@ -2,6 +2,7 @@ import mysql.connector as connection
 import os
 import streamlit as st
 from dotenv import load_dotenv
+import requests
 
 
 
@@ -17,9 +18,7 @@ class Database:
             password=os.environ['password'],
             database=os.environ['database_name']
         )
-        self.my_cursor = self.my_db.cursor()
-    
-    
+        self.my_cursor = self.my_db.cursor() 
 
 
 class UsersCrud(Database):
@@ -113,6 +112,12 @@ class UsersCrud(Database):
                 if user[1]==login and user[2]==password:
                     return user
 
-    
 
-    
+class ApiCall:
+
+    def get_image(self):
+        response = requests.get(" https://dog.ceo/api/breeds/image/random")
+        if not response:
+            st.write('No Data!')
+        else:
+            st.sidebar.image(response.json()['message'])

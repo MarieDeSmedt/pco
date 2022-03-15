@@ -3,7 +3,7 @@ import os
 
 from bokeh.models import Div
 from dotenv import load_dotenv
-from classes.objects import UsersCrud 
+from classes.objects import UsersCrud,ApiCall
 
 
 
@@ -43,7 +43,10 @@ def authentication_tool():
                     st.session_state["role"]="admin"
                 else:
                     st.session_state["role"]="user"
-                st.sidebar.success('you are connected as '+ st.session_state["role"])  
+                st.sidebar.success('you are connected as '+ st.session_state["role"]) 
+                ac = ApiCall()
+                ac.get_image()
+     
                 st.session_state['authenticaton_state']= True     
             else:
                 st.sidebar.error("ERROR LOGIN AND PASSWORD")

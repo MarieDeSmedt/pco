@@ -8,6 +8,7 @@ from pages.admin import display_admin
 from tools import *
 
 
+
 # toujours en premier
 st.set_page_config(layout='wide',initial_sidebar_state='expanded')
 
@@ -40,6 +41,7 @@ authentication_tool()
 #si connecté
 if st.session_state['authenticaton_state']:
 
+  
     #Nom des onglets
     if st.session_state["role"] == "admin":
         menu_data = [
