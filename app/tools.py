@@ -1,6 +1,9 @@
 import streamlit as st
+from streamlit_folium import folium_static
+import folium
 import os
-
+import numpy as np
+import pandas as pd
 from bokeh.models import Div
 from dotenv import load_dotenv
 from classes.objects import UsersCrud,ApiCall
@@ -49,10 +52,8 @@ def authentication_tool():
      
                 st.session_state['authenticaton_state']= True     
             else:
-                st.sidebar.error("ERROR LOGIN AND PASSWORD")
-
-    
-                    
+                st.sidebar.error("ERROR LOGIN OR PASSWORD")
+        
        
 
 def create_user_tool():
@@ -134,3 +135,17 @@ def delete_user_tool():
             except Exception as e:
                 st.error('An error has occurred, someone will be punished for your inconvenience, we humbly request you try again.')
                 st.error('Error details: {}'.format(e))
+
+
+def show_map(df):
+    midpoint = (np.average(df['latitude']), np.average(df['longitude']))
+    names = df[['siteLabel']]
+    locations = df[['latitude', 'longitude']]
+    locationlist = locations.values.tolist()
+    namelist = names.values.tolist()
+    
+    map = folium.Map(location=midpoint, zoom_start=5)
+    for i in range(len(locationlist)):
+        folium.Marker(locationlist[i], popup=namelist[i]).add_to(map)
+    folium_static(map)
+    

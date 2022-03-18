@@ -5,6 +5,7 @@ import pandas as pd
 
 from pages.home import display_home
 from pages.admin import display_admin
+from pages.map import display_map
 from tools import *
 
 
@@ -40,17 +41,18 @@ authentication_tool()
 
 #si connecté
 if st.session_state['authenticaton_state']:
-
   
     #Nom des onglets
     if st.session_state["role"] == "admin":
         menu_data = [
             {'label':"Home"},
+            {'label':"Map"},
             {'label':"Admin"}
         ]
     else:
         menu_data = [
-            {'label':"Home"}
+            {'label':"Home"},
+            {'label':"Map"}
         ]
 
     #set the navbar
@@ -64,6 +66,8 @@ if st.session_state['authenticaton_state']:
     #action selon onglet 
     if menu_id == "Admin":
         display_admin()
+    elif menu_id =="Map":
+        display_map()
     else: 
         display_home()
 
