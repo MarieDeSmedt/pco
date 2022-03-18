@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from tools import *
+from st_aggrid import AgGrid
 
         
 def display_map():
@@ -12,7 +13,7 @@ def display_map():
         drives_selected_list = st.multiselect("Drives", options = df["siteLabel"], help = "Choisir les drives à observer sur la carte",)
         if len(drives_selected_list)>0:
             df_choosen_drives = df[df["siteLabel"].isin(drives_selected_list)]
-            st.dataframe(df_choosen_drives.head())
+            AgGrid(df_choosen_drives)
          
     
     if len(drives_selected_list)>0:

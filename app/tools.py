@@ -1,6 +1,7 @@
 import streamlit as st
 from streamlit_folium import folium_static
 import folium
+from folium.plugins import MarkerCluster
 import os
 import numpy as np
 import pandas as pd
@@ -140,12 +141,26 @@ def delete_user_tool():
 def show_map(df):
     midpoint = (np.average(df['latitude']), np.average(df['longitude']))
     names = df[['siteLabel']]
+    avg= df[['AVG_TDN_12']]
     locations = df[['latitude', 'longitude']]
     locationlist = locations.values.tolist()
     namelist = names.values.tolist()
+    avglist = avg.values.tolist()
     
+    
+
     map = folium.Map(location=midpoint, zoom_start=5)
+    marker_cluster = MarkerCluster().add_to(map)
     for i in range(len(locationlist)):
-        folium.Marker(locationlist[i], popup=namelist[i]).add_to(map)
+    
+        if i%2 == 0:
+            color= "green"
+        else:
+            color= "blue"
+       
+        folium.Marker(locationlist[i], 
+                    popup=namelist[i], 
+                    icon=folium.Icon(color=color, icon_color=color, icon='house', angle=0, prefix='fa')
+                    ).add_to(marker_cluster)
     folium_static(map)
     
